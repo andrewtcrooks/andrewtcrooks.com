@@ -1,8 +1,10 @@
 Title: About
 
-I’m a Seattle-based data scientist and developer.
+Seattle-based Python Developer and Data Scientist.
 
-Over the past year, I taught Physics at Shoreline Community College.
+Currently a Teaching Assistant for the advanced Python course at Code Fellows.
 
-Before that, I was a graduate student at the University of California Riverside working on astrophysics research, statistically analyzing images from Hubble Ultra Deep Field.
+Previously taught Physics at Shoreline Community College.
+
+Before that, used Python to statistically analyze images from the Hubble Ultra Deep Field archive as a Graduate Student Researcher at the University of California, Riverside.
 

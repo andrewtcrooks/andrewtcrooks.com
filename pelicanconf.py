@@ -20,7 +20,7 @@ ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
 PAGE_PATHS = ['pages']
 PAGE_URL = '{slug}/'
 PAGE_SAVE_AS = '{slug}/index.html'
-ABOUT_PAGE_HEADER = 'Welcome!'
+ABOUT_PAGE_HEADER = 'About'
 
 # DEFAULTS
 DEFAULT_LANG = 'en'
