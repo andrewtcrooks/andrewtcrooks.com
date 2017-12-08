@@ -1,4 +1,4 @@
-Title: AWS EC2 Deep Learning Jupyter notebook server start script
+Title: AWS Jupyter notebook server
 Slug: aws-ec2-jupyter-server-script
 Date: 2017-07-08
 Category: scripts_bash

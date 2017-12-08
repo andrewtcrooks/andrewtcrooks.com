@@ -33,6 +33,13 @@ gen
 /content/2017/screenshot1.jpg
 /content/2017/screenshot3.jpg
 /content/2017/screenshot2.jpg
-/content/notebooks/merlin.pem
-/content/notebooks/host.fingerprint
-/content/notebooks/host.key
+/content/notebooks/*.pem
+/content/notebooks/host.*
+!/content/notebooks/Jupyter_Setup.ipynb
+/content/images/headshot.jpg
+/content/notebooks/Untitled1.ipynb
+/content/notebooks/Untitled4.ipynb
+/content/notebooks/Untitled2.ipynb
+/content/notebooks/Untitled3.ipynb
+/content/notebooks/Untitled.ipynb
+/content/notebooks/animals.tsv
