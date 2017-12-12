@@ -35,7 +35,6 @@ gen
 /content/2017/screenshot2.jpg
 /content/notebooks/*.pem
 /content/notebooks/host.*
-!/content/notebooks/Jupyter_Setup.ipynb
 /content/images/headshot.jpg
 /content/notebooks/Untitled1.ipynb
 /content/notebooks/Untitled4.ipynb
@@ -43,4 +42,3 @@ gen
 /content/notebooks/Untitled3.ipynb
 /content/notebooks/Untitled.ipynb
 /content/notebooks/animals.tsv
-!/content/notebooks/AWS_Jupyter_Notebook_Server.ipynb
