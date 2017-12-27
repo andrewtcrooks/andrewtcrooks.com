@@ -38,3 +38,12 @@
   /*font-weight: bold;*/
   font-size: 14px;
 }
+
+div.cell {
+  /*margin: 0 !important;*/
+  margin-top: 0px;
+  margin-right: 100%;
+  margin-bottom: 0px;
+  margin-left: 0px;
+
+}
