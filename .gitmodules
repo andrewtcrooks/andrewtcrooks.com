@@ -5,5 +5,5 @@
     path = pelican-plugins
     url = git://github.com/andrewtcrooks/pelican-plugins.git
 [submodule "pelican_dynamic"]
-    path = pelican_dynamic
-    url = git://github.com/andrewtcrooks/pelican_dynamic.git
+	path = pelican_dynamic
+	url = https://github.com/wrobstory/pelican_dynamic.git
