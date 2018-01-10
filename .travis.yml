@@ -14,6 +14,3 @@ env:
     secure: quTwfO5XJ9g5pLSNuxTDmh2oflgHc8LO2eIM1hq5QhXRwiTIgeevFH64emg4dSUfE9RUXO1jCKtjEDcRHSehEifN5LinNXZ5ZQsOLRUsJuziimmNT/apUG9efbknqV3vCQjHeoUEYmKyRIBENJzL1qzIty27+1lh0xs2mNhmzo+z6Og1cfQVdbzR4NMVzflqvSApin/7FYf4SI0INf0ighVB9CrTcByWN6rfJBYpToDVYPT8JQ7RkeGiJrf9RMaEETp7iFMvPOzlTDgpvvFAWzzrXWkQ7BSew9kqHXlzRL7aGxmYpDiCXlUwR4SOXU+vLXEQnuqb5K3z0yTDc+6dD2aZcQuTLCeUAPACz2aiRd6BcZclR0x6bMZcoksUf19zHZqpx9q5XU/6W/wmgzkPBmuCf2UO2G2Dv40rJeFoN63Pp67AXU4+0kFqnQ67DCYkSkzFMygGRi6X1908PF7dQeUoJdM0V5qQ4BFm49SvOJqBdjwCz2xjQ4FeeSjfv5b0g5wzZLwO1UFxGADgoPlyyw8ALiyl+hXs4o0dSbhUTFkDBXp2ezhqftO6w110zIXX5aQWE7ojADPHdZ8bsMb9ubaTdyD2J75Fb9Q7k4eiRh6xrL3YeqcsBCgj0wuB++3CAOk3hjVgkdrxCvmzQxfNvxPe2EBLgtGO0f3rnXIJzzo=
 git:
   submodules: false
-before_install:
-  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-  - git submodule update --init --recursive
