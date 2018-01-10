@@ -6,8 +6,8 @@ branches:
   only:
     - master
 before_install:
-  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-  - git submodule update --init --recursive
+  # - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  # - git submodule update --init --recursive
   - cp Jupyter-Quick-Setup-on-Mac/Jupyter_Setup.ipynb content/notebooks
   - cp AWS-Jupyter-notebook-server/AWS_Jupyter_Notebook_Server.ipynb content/notebooks
   - cp AWS-Jupyter-notebook-server/mappings.json content/notebooks
