@@ -2,9 +2,6 @@
 ### Example user template template
 ### Example user template
 
-# Travis CI
-!.travis.yml
-
 
 # IntelliJ project files
 .idea
