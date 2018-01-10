@@ -6,7 +6,7 @@ branches:
   only:
     - master
 install:
-  - pip install pelican webassets ghp-import
+  - pip install pelican markdown webassets ghp-import
 script:
   - make publish github
 env:
