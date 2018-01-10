@@ -7,6 +7,3 @@
 [submodule "pelican_dynamic"]
 	path = pelican_dynamic
 	url = https://github.com/wrobstory/pelican_dynamic.git
-[submodule "pleican-plugins"]
-	path = pleican-plugins
-	url = https://github.com/getpelican/pelican-plugins.git
