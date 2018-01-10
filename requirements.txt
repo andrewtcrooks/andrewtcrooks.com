@@ -1,3 +1,4 @@
+appdirs==1.4.3
 appnope==0.1.0
 asn1crypto==0.22.0
 awscli==1.11.104
