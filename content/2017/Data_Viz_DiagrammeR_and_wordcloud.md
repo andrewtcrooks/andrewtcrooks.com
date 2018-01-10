@@ -10,4 +10,4 @@ Summary: example of some visuals you can make in R and python
 {% notebook notebooks/Data_Viz_DiagrammeR_and_wordcloud.ipynb %}
 
 
-![]({attach}instacart_wc.png)
+![Instacart Wordcloud]({attach}instacart_wc.png)
