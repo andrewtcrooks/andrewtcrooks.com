@@ -8,7 +8,6 @@ branches:
 before_install:
   - git submodule update --init --recursive
 install:
-  - easy_install distribute
   - pip install -r requirements.txt
 script:
   - make publish github
