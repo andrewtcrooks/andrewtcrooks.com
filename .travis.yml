@@ -1,7 +1,7 @@
 language: python
 python:
 - '3.6'
-- '2.7'
+# - '2.7'
 branches:
   only:
   - master
@@ -13,6 +13,7 @@ deploy:
   provider: pages
   local_dir: "./output"
   skip_cleanup: true
+  github_token: $GH_TOKEN # Set in travis-ci.org dashboard
   target_branch: gh-pages
   on:
     branch: master
@@ -20,6 +21,6 @@ notifications:
   email:
     on_success: always
     on_failure: never
-env:
-  global:
-    secure: DQrzmIGQ2g9ljJDUWxRaPz4kcZVyh1+OGBy8nrQzLG9sjBWm02gxJNjSzeogypZNlwf3I8nGUbKyrLTpJEYYnWPcohyBdv0T01OYf28zhI2edzZ8DUxsauDIQio7kYz/jgC0MwRPQvAWMeswAyT5mydL/oSe/oiBDBKzvTgSaAwTmc0LqlyW+etA1+SnMccWmEaiwSnSQNvo68ukUAmJisT791YpWsSiSCRLA+fq3xGSO4dTexAymW+NPiXDkzcpLkLpI/Joz1NZwaiTyk3KIF+d1/bxG0qtfde+sIUSNQjaBGJ8x4lthFtRqgGITP8LEIN0A/1F9s11oQrOgmeXs0odqDJNr23I54NnWLZFwmOipf/Gz0H8gMV+judNLnvR7K/ky+0+7lG4UoCz1zxDvnGeehopRMCflqDw0Vn/8ocDXxYwCAsKN5LKPTtZwEoStFciS98UbmqNZTfMQdRqSz6Na1CYYsRU8VHlKO+dM8GN0w08coTFQAiAqbRdx0PRikBOxl7wlKHKU6oX/bpzsfvO0zO2ZDg79ELPhGj6o9oDAT7gTqH+sdRN+VVN516PmymXfj3jx74Cq2RkzVFaYSQhTKvD/g0byltz8074fUJejnJ/w5AXk/OeUC3d/NDV09/DOm2kaVdwlfk5hwyWG7Zi9hc/JbpFdgQZhtjdmhI=
+# env:
+#   global:
+#     secure: DQrzmIGQ2g9ljJDUWxRaPz4kcZVyh1+OGBy8nrQzLG9sjBWm02gxJNjSzeogypZNlwf3I8nGUbKyrLTpJEYYnWPcohyBdv0T01OYf28zhI2edzZ8DUxsauDIQio7kYz/jgC0MwRPQvAWMeswAyT5mydL/oSe/oiBDBKzvTgSaAwTmc0LqlyW+etA1+SnMccWmEaiwSnSQNvo68ukUAmJisT791YpWsSiSCRLA+fq3xGSO4dTexAymW+NPiXDkzcpLkLpI/Joz1NZwaiTyk3KIF+d1/bxG0qtfde+sIUSNQjaBGJ8x4lthFtRqgGITP8LEIN0A/1F9s11oQrOgmeXs0odqDJNr23I54NnWLZFwmOipf/Gz0H8gMV+judNLnvR7K/ky+0+7lG4UoCz1zxDvnGeehopRMCflqDw0Vn/8ocDXxYwCAsKN5LKPTtZwEoStFciS98UbmqNZTfMQdRqSz6Na1CYYsRU8VHlKO+dM8GN0w08coTFQAiAqbRdx0PRikBOxl7wlKHKU6oX/bpzsfvO0zO2ZDg79ELPhGj6o9oDAT7gTqH+sdRN+VVN516PmymXfj3jx74Cq2RkzVFaYSQhTKvD/g0byltz8074fUJejnJ/w5AXk/OeUC3d/NDV09/DOm2kaVdwlfk5hwyWG7Zi9hc/JbpFdgQZhtjdmhI=
