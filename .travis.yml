@@ -5,20 +5,20 @@ python:
 branches:
   only:
     - master
-before_install:
+# before_install:
   # - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   # - git submodule update --init --recursive
-  - cp Jupyter-Quick-Setup-on-Mac/Jupyter_Setup.ipynb content/notebooks
-  - cp AWS-Jupyter-notebook-server/AWS_Jupyter_Notebook_Server.ipynb content/notebooks
-  - cp AWS-Jupyter-notebook-server/mappings.json content/notebooks
-  - cp Data-Viz-with-DiagrammeR-and-wordcloud/Data_Viz_DiagrammeR_and_wordcloud.ipynb content/notebooks
-  - cp taskorganizer/instacart_wc.png content/notebooks
-  - cp taskorganizer/instacart_wc.png content/2017
-  - cp taskorganizer/screenshot1.jpg content/2017
-  - cp taskorganizer/screenshot2.jpg content/2017
-  - cp taskorganizer/screenshot3.jpg content/2017
-  - cp taskorganizer/screenshot4.jpg content/2017
-  - cp taskorganizer/README.md content/2017/taskorganizer_README.md
+  # - cp Jupyter-Quick-Setup-on-Mac/Jupyter_Setup.ipynb content/notebooks
+  # - cp AWS-Jupyter-notebook-server/AWS_Jupyter_Notebook_Server.ipynb content/notebooks
+  # - cp AWS-Jupyter-notebook-server/mappings.json content/notebooks
+  # - cp Data-Viz-with-DiagrammeR-and-wordcloud/Data_Viz_DiagrammeR_and_wordcloud.ipynb content/notebooks
+  # - cp taskorganizer/instacart_wc.png content/notebooks
+  # - cp taskorganizer/instacart_wc.png content/2017
+  # - cp taskorganizer/screenshot1.jpg content/2017
+  # - cp taskorganizer/screenshot2.jpg content/2017
+  # - cp taskorganizer/screenshot3.jpg content/2017
+  # - cp taskorganizer/screenshot4.jpg content/2017
+  # - cp taskorganizer/README.md content/2017/taskorganizer_README.md
 install:
   - pip install -r requirements.txt
 script:
