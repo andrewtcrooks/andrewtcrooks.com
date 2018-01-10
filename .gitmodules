@@ -7,3 +7,15 @@
 [submodule "pelican_dynamic"]
 	path = pelican_dynamic
 	url = https://github.com/wrobstory/pelican_dynamic.git
+[submodule "AWS-Jupyter-notebook-server"]
+	path = AWS-Jupyter-notebook-server
+	url = https://github.com/andrewtcrooks/AWS-Jupyter-notebook-server.git
+[submodule "Data-Viz-with-DiagrammeR-and-wordcloud"]
+	path = Data-Viz-with-DiagrammeR-and-wordcloud
+	url = https://github.com/andrewtcrooks/Data-Viz-with-DiagrammeR-and-wordcloud.git
+[submodule "Jupyter-Quick-Setup-on-Mac"]
+	path = Jupyter-Quick-Setup-on-Mac
+	url = https://github.com/andrewtcrooks/Jupyter-Quick-Setup-on-Mac.git
+[submodule "taskorganizer"]
+	path = taskorganizer
+	url = https://github.com/andrewtcrooks/taskorganizer.git
