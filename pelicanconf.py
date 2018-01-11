@@ -7,7 +7,7 @@ SITENAME = u'Andrew T. Crooks'
 SITEURL = 'http://www.andrewtcrooks.com'
 TIMEZONE = 'US/Pacific'
 THEME = 'void/'
-TITLE = "Example: What is the title of your site?"    								# EDIT THIS
+TITLE = "andrewtcrooks.com"    				     	# EDIT THIS
 DESCRIPTION = "Python programming blog."			# EDIT THIS
 
 HEAD_IMAGE = '/images/headshot.jpg'
@@ -16,12 +16,6 @@ FAVICON_IMAGE = '/images/dsd-logo_color-dark.svg'
 
 ARTICLE_URL = '{date:%Y}/{date:%m}/{date:%d}/{slug}/'
 ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
-
-DIRECT_TEMPLATES = ('404', 'analytics', 'article', 'base', 'blog',
-                    'footer', 'index', 'navbar', 'page', 'sitemap',
-                    'tag')
-SITEMAP_SAVE_AS = 'sitemap.xml'
-
 
 # Static Pages
 PAGE_PATHS = ['pages']
@@ -45,7 +39,22 @@ MARKUP = ('md', 'ipynb')
 
 # PLUGINS
 PLUGIN_PATHS = ['pelican-plugins', 'pelican_dynamic']
-PLUGINS = ['assets', 'pelican-ipynb.liquid', 'pelican_dynamic']
+PLUGINS = ['assets', 'pelican-ipynb.liquid', 'pelican_dynamic',
+           'pelican.plugins.sitemap']
+
+SITEMAP = {
+    'format': 'xml',
+    'priorities': {
+        'articles': 0.5,
+        'indexes': 0.5,
+        'pages': 0.5
+    },
+    'changefreqs': {
+        'articles': 'monthly',
+        'indexes': 'daily',
+        'pages': 'monthly'
+    }
+}
 
 CODE_DIR = 'code'
 # NOTEBOOK_DIR = 'notebooks'
