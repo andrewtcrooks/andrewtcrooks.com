@@ -13,7 +13,7 @@ python:
 #     - os: osx
 #       language: generic
 install:
-  # - pip install -r requirements.txt
+  - pip install -r requirements.txt
   # - pip install -e .
 
   # - |
@@ -26,7 +26,7 @@ install:
   #       pyenv global pypy-5.4.1
   #       pip install git+https://bitbucket.org/pypy/numpy.git
   #   fi
-  - pip install pelican html5validator coveralls
+  - pip install html5validator coveralls
 
 script:
   - make validate
