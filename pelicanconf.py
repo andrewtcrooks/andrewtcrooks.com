@@ -40,7 +40,7 @@ MARKUP = ('md', 'ipynb')
 # PLUGINS
 PLUGIN_PATHS = ['pelican-plugins', 'pelican_dynamic']
 PLUGINS = ['assets', 'pelican-ipynb.liquid', 'pelican_dynamic',
-           'pelican.plugins.sitemap']
+           'sitemap']
 
 SITEMAP = {
     'format': 'xml',
