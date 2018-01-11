@@ -12,7 +12,7 @@ install:
   - pip install coveralls
 script:
   - make publish
-  - py.test
+  - pytest
 after_success:
   - coveralls
 deploy:
