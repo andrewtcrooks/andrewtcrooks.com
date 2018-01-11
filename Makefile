@@ -66,6 +66,7 @@ help:
 	@echo '   make editpost NAME="Title"          create markdown file for new post  '
 	@echo '   make newpage NAME="Title"           create markdown file for new post  '
 	@echo '   make editpage NAME="Title"          create markdown file for new post  '
+	@echo '   make validate                       validate output via html5validator '
 	@echo '                                                                          '
 	@echo 'Set the DEBUG variable to 1 to enable debugging, e.g. make DEBUG=1 html   '
 	@echo 'Set the RELATIVE variable to 1 to enable relative urls                    '
@@ -167,6 +168,9 @@ else
 	@echo 'Variable NAME is not defined.'
 	@echo 'Do make editpage NAME='"'"'Page Name'"'"
 endif
+
+validate: publish
+	html5validator --root $(OUTPUTDIR)
 
 # github: publish
 # 	ghp-import -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
