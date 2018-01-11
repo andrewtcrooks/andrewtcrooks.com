@@ -1,12 +1,18 @@
 PY?=python3
 PELICAN?=pelican
 PELICANOPTS=
+EDITOR=subl
 
 BASEDIR=$(CURDIR)
 INPUTDIR=$(BASEDIR)/content
 OUTPUTDIR=$(BASEDIR)/output
 CONFFILE=$(BASEDIR)/pelicanconf.py
 PUBLISHCONF=$(BASEDIR)/publishconf.py
+
+PAGESDIR=$(INPUTDIR)/pages
+DATE := $(shell date +'%Y-%m-%d %H:%M:%S')
+SLUG := $(shell echo '${NAME}' | sed -e 's/[^[:alnum:]]/-/g' | tr -s '-' | tr A-Z a-z)
+EXT ?= md
 
 FTP_HOST=localhost
 FTP_USER=anonymous
@@ -55,7 +61,11 @@ help:
 	@echo '   make ftp_upload                     upload the web site via FTP        '
 	@echo '   make s3_upload                      upload the web site via S3         '
 	@echo '   make cf_upload                      upload the web site via Cloud Files'
-	@echo '   make github                         upload the web site via gh-pages   '
+	# @echo '   make github                         upload the web site via gh-pages   '
+	@echo '   make newpost NAME="Title"           create markdown file for new post  '
+	@echo '   make editpost NAME="Title"          create markdown file for new post  '
+	@echo '   make newpage NAME="Title"           create markdown file for new post  '
+	@echo '   make editpage NAME="Title"          create markdown file for new post  '
 	@echo '                                                                          '
 	@echo 'Set the DEBUG variable to 1 to enable debugging, e.g. make DEBUG=1 html   '
 	@echo 'Set the RELATIVE variable to 1 to enable relative urls                    '
@@ -116,6 +126,47 @@ s3_upload: publish
 
 cf_upload: publish
 	cd $(OUTPUTDIR) && swift -v -A https://auth.api.rackspacecloud.com/v1.0 -U $(CLOUDFILES_USERNAME) -K $(CLOUDFILES_API_KEY) upload -c $(CLOUDFILES_CONTAINER) .
+
+newpost:
+ifdef NAME
+	echo "Title: $(NAME)" >  $(INPUTDIR)/$(SLUG).$(EXT)
+	echo "Slug: $(SLUG)" >> $(INPUTDIR)/$(SLUG).$(EXT)
+	echo "Date: $(DATE)" >> $(INPUTDIR)/$(SLUG).$(EXT)
+	echo ""              >> $(INPUTDIR)/$(SLUG).$(EXT)
+	echo ""              >> $(INPUTDIR)/$(SLUG).$(EXT)
+	${EDITOR} ${INPUTDIR}/${SLUG}.${EXT} &
+else
+	@echo 'Variable NAME is not defined.'
+	@echo 'Do make newpost NAME='"'"'Post Name'"'"
+endif
+
+editpost:
+ifdef NAME
+	${EDITOR} ${INPUTDIR}/${SLUG}.${EXT} &
+else
+	@echo 'Variable NAME is not defined.'
+	@echo 'Do make editpost NAME='"'"'Post Name'"'"
+endif
+
+newpage:
+ifdef NAME
+	echo "Title: $(NAME)" >  $(PAGESDIR)/$(SLUG).$(EXT)
+	echo "Slug: $(SLUG)" >> $(PAGESDIR)/$(SLUG).$(EXT)
+	echo ""              >> $(PAGESDIR)/$(SLUG).$(EXT)
+	echo ""              >> $(PAGESDIR)/$(SLUG).$(EXT)
+	${EDITOR} ${PAGESDIR}/${SLUG}.$(EXT)
+else
+	@echo 'Variable NAME is not defined.'
+	@echo 'Do make newpage NAME='"'"'Page Name'"'"
+endif
+
+editpage:
+ifdef NAME
+	${EDITOR} ${PAGESDIR}/${SLUG}.$(EXT)
+else
+	@echo 'Variable NAME is not defined.'
+	@echo 'Do make editpage NAME='"'"'Page Name'"'"
+endif
 
 # github: publish
 # 	ghp-import -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
