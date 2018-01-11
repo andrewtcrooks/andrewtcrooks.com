@@ -30,10 +30,6 @@ gen
 /content/extra/robots.txt
 /content/notebooks/Indeed_Job_Scraper.ipynb
 
-/content/2017/screenshot4.jpg
-/content/2017/screenshot1.jpg
-/content/2017/screenshot3.jpg
-/content/2017/screenshot2.jpg
 /content/notebooks/*.pem
 /content/notebooks/host.*
 /content/images/headshot.jpg
@@ -43,3 +39,6 @@ gen
 /content/notebooks/Untitled3.ipynb
 /content/notebooks/Untitled.ipynb
 /content/notebooks/animals.tsv
+
+# Testing
+/coverage
