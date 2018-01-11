@@ -8,11 +8,12 @@ branches:
     - master
 install:
   - pip install -r requirements.txt
+  # - pip install -e .
   - pip install pytest pytest-cov
   - pip install coveralls
 script:
   - make publish
-  - pytest
+  - python -m pytest
 after_success:
   - coveralls
 deploy:
