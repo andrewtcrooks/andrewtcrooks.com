@@ -1,6 +1,6 @@
 PY?=python3
 PELICAN?=pelican
-PELICANOPTS=
+PELICANOPTS=-t /themes/custom
 EDITOR=subl
 
 BASEDIR=$(CURDIR)
