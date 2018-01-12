@@ -9,6 +9,11 @@
 out
 gen
 
+__pycache__
+page_examples
+publishconf.py
+tox.ini
+fabfile.py
 
 /_dev/*
 /_code/*

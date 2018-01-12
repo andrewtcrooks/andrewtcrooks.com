@@ -43,7 +43,7 @@
       {% endfor %}
     {% endif %}
   </h5>
-  <hr class="small"></hr>
+  <hr class="small">
 
   <!-- Article Content
   ================================================================== -->
@@ -52,15 +52,17 @@
 <!--
   <p><em>Want to work together? My team at <a href="https://sproutsocial.com/">Sprout Social</a> is looking for a <a href="http://sproutsocial.theresumator.com/apply/4HgjTU">Senior Data Scientist</a></em>.</p>
 
-  <hr class="small"></hr>
+  <hr class="small">
 
 -->
 
-    {{ article.content }}
+  {{ article.content }}
+
   </div>
 
-  <hr class="small"></hr>
+  <hr class="small">
   <div class="article-sharing">
+    <div>
       <ul>
       {% if TWITTER_NAME %}
       <!-- Twitter Sharing
@@ -90,6 +92,7 @@
     <div class="back-to-home">
       <a href="/">← Back to Home</a>
     </div>
-    <hr class="small"></hr>
+    <hr class="small">
+    
   </div>
 {% endblock %}
