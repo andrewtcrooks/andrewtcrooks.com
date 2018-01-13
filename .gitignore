@@ -9,37 +9,15 @@
 out
 gen
 
-__pycache__
-page_examples
-publishconf.py
-tox.ini
-fabfile.py
-
+/__pycache__/
 /_dev/*
 /_code/*
 /output/
 /output/*
-/content/notebooks/.ipynb_checkpoints
-/content/notebooks/.ipynb_checkpoints/*
 /*.pyc
 /*.pid
 /cache/*
 
-
-/pages_examples/
 /client_secrets.p12
-/content_hidden/
 /content/extra/robots.txt
-/content/notebooks/Indeed_Job_Scraper.ipynb
 
-/content/notebooks/*.pem
-/content/notebooks/host.*
-/content/notebooks/Untitled1.ipynb
-/content/notebooks/Untitled4.ipynb
-/content/notebooks/Untitled2.ipynb
-/content/notebooks/Untitled3.ipynb
-/content/notebooks/Untitled.ipynb
-/content/notebooks/animals.tsv
-
-# Testing
-/coverage
