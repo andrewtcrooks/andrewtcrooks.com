@@ -19,3 +19,6 @@
 [submodule "taskorganizer"]
 	path = taskorganizer
 	url = https://github.com/andrewtcrooks/taskorganizer.git
+[submodule "pelican-plugins/pelican-ipynb"]
+	path = pelican-plugins/pelican-ipynb
+	url = https://github.com/danielfrg/pelican-ipynb.git
