@@ -29,15 +29,11 @@ fabfile.py
 /pages_examples/
 /client_secrets.p12
 /content_hidden/
-/content/images/headshot2.jpg
-/content/images/headshot4.jpg
-/content/images/headshot5.jpg
 /content/extra/robots.txt
 /content/notebooks/Indeed_Job_Scraper.ipynb
 
 /content/notebooks/*.pem
 /content/notebooks/host.*
-/content/images/headshot.jpg
 /content/notebooks/Untitled1.ipynb
 /content/notebooks/Untitled4.ipynb
 /content/notebooks/Untitled2.ipynb
