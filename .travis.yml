@@ -2,7 +2,7 @@ language: python
 python:
   - '3.6'
   - '3.4'
-  - '2.7'
+  # - '2.7'
 # - 'pypy'
 # branches:
 #   only:
@@ -29,9 +29,10 @@ install:
   - pip install html5validator coveralls
 
 script:
-  - make validate
-after_success:
-  - coveralls
+  - make publish
+  # - make validate
+# after_success:
+#   - coveralls
 deploy:
   provider: pages
   local_dir: "./output"
