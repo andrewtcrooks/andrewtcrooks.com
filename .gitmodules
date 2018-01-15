@@ -16,3 +16,6 @@
 [submodule "taskorganizer"]
 	path = taskorganizer
 	url = https://github.com/andrewtcrooks/taskorganizer.git
+[submodule "Job-Scraper"]
+	path = Job-Scraper
+	url = https://github.com/andrewtcrooks/Job-Scraper.git
