@@ -7,4 +7,4 @@ Author: Andrew C.
 Summary: Indeed job scraper wth extra filtering options not found on Indeed.
 
 
-{% notebook notebooks/Jupyter_Setup.ipynb %}
+{% notebook notebooks/Indeed_Job_Scraper.ipynb %}
