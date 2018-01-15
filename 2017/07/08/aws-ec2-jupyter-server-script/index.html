@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+    
+
+<style type="text/css">
+  /* IPython syntax highliting */
+
+  div.text_cell_render {
+    /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+    outline: none;
+    resize: none;
+    width: inherit;
+    border-style: none;
+    padding: 0.5em 0.5em 0.5em 0.4em;
+    color: #979797;                             /* Article Text */
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+  }
+  /* input_area and input_prompt must match in top border and margin for alignment */
+  div.input_area {
+    border: 1px solid #979797;
+    border-radius: 2px;
+    background: #323232;
+    line-height: 1.21429em;
+  }
+  div.code_cell {
+    font-family: monospace;
+  }
+</style>
+
+
+
+<style type="text/css">
+
+
+  .cm-s-ipython span.cm-atom {color: #8888c6;}
+
+  .cm-s-ipython span.cm-property, .cm-s-ipython span.cm-attribute {color: #a9b7c6;}
+  .cm-s-ipython span.cm-def {color: #cc7832;}
+  .cm-s-ipython span.cm-bracket {color: #a9b7c6;}
+  /*.cm-s-ipython span.cm-paren {color: #a9b7c6;}*/
+  .cm-s-ipython span.cm-link {color: #287bde;}
+
+
+
+  .highlight .hll { background-color: #ffffcc }
+  .highlight  { background: #323232; font-family: monospace}
+  .highlight .c { color: #808080; font-style: italic } /* Comment */
+  .highlight .ch { color: #808080; font-style: italic } /* Comment.Hashbang */
+  .highlight .cm { color: #808080; font-style: italic } /* Comment.Multiline */
+  .highlight .cp { color: #408080 } /* Comment.Preproc */
+  .highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+  .highlight .c1 { color: #808080; font-style: italic } /* Comment.Single */
+  .highlight .cs { color: #808080; font-style: italic } /* Comment.Special */
+  .highlight .k { color: #cc7832; font-weight: bold } /* Keyword */
+  .highlight .kc { color: #cc7832; font-weight: bold } /* Keyword.Constant */
+  .highlight .kd { color: #cc7832; font-weight: bold } /* Keyword.Declaration */
+  .highlight .kn { color: #cc7832; font-weight: bold } /* Keyword.Namespace */
+  .highlight .kp { color: #cc7832 } /* Keyword.Pseudo */
+  .highlight .kr { color: #cc7832; font-weight: bold } /* Keyword.Reserved */
+  .highlight .kt { color: #cc7832 } /* Keyword.Type */
+  .highlight .m { color: #6897bb } /* Literal.Number */
+  .highlight .mb { color: #6897bb } /* Literal.Number.Bin */
+  .highlight .mf { color: #6897bb } /* Literal.Number.Float */
+  .highlight .mh { color: #6897bb } /* Literal.Number.Hex */
+  .highlight .mi { color: #6897bb } /* Literal.Number.Integer */
+  .highlight .mo { color: #6897bb } /* Literal.Number.Oct */
+  .highlight .il { color: #6897bb } /* Literal.Number.Integer.Long */
+
+.highlight .s { color: #a5c261 } /* Literal.String */
+  .highlight .sa { color: #a5c261 } /* Literal.String.Affix */
+  .highlight .sb { color: #a5c261 } /* Literal.String.Backtick */
+  .highlight .sc { color: #a5c261 } /* Literal.String.Char */
+  .highlight .dl { color: #a5c261 } /* Literal.String.Delimiter */
+  .highlight .sd { color: #a5c261; font-style: italic } /* Literal.String.Doc */
+  .highlight .s2 { color: #a5c261 } /* Literal.String.Double */
+  .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+  .highlight .sh { color: #a5c261 } /* Literal.String.Heredoc */
+  .highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+  .highlight .sx { color: #a5c261 } /* Literal.String.Other */
+  .highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+  .highlight .s1 { color: #a5c261 } /* Literal.String.Single */
+
+  .highlight .ss { color: #19177C } /* Literal.String.Symbol */
+
+  .highlight .o { color: #ffffff } /* Operator */
+
+  .highlight .n { color: #a9b7c6 } /* Name.Text */
+  .highlight .nn { color: #a9b7c6 } /* Name.Namespace aka package name*/
+  .highlight .nb { color: #8888c6 } /* Name.Builtin */
+  .highlight .bp { color: #8888c6 } /* Name.Builtin.Pseudo */
+  .highlight .err { border: 1px solid #ff6b68 } /* Error */
+  .highlight .nt { color: #a9b7c6; font-weight: bold } /* Name.Tag */
+  .highlight .nv { color: #a9b7c6 } /* Name.Variable */
+  .highlight .vc { color: #a9b7c6 } /* Name.Variable.Class */
+  .highlight .vg { color: #a9b7c6 } /* Name.Variable.Global */
+  .highlight .vi { color: #a9b7c6 } /* Name.Variable.Instance */
+  .highlight .vm { color: #a9b7c6 } /* Name.Variable.Magic */
+
+
+
+
+
+  .highlight .gd { color: #A00000 } /* Generic.Deleted */
+  .highlight .ge { font-style: italic } /* Generic.Emph */
+  .highlight .gr { color: #ff6b68 } /* Generic.Error */
+  .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+  .highlight .gi { color: #00A000 } /* Generic.Inserted */
+  .highlight .go { color: #888888 } /* Generic.Output */
+  .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+  .highlight .gs { font-weight: bold } /* Generic.Strong */
+  .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+  .highlight .gt { color: #0044DD } /* Generic.Traceback */
+
+
+
+  .highlight .na { color: #7D9029 } /* Name.Attribute */
+  .highlight .nc { color: #0000FF } /* Name.Class */
+  .highlight .no { color: #880000 } /* Name.Constant */
+  .highlight .nd { color: #AA22FF } /* Name.Decorator */
+  .highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+  .highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+
+  .highlight .nf { color: #cc7832 } /* Name.Function */
+  .highlight .nl { color: #A0A000 } /* Name.Label */
+
+
+  .highlight .ow { color: #cc7832; font-weight: bold } /* Operator.Word */
+  .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+
+  .highlight .fm { color: #0000FF } /* Name.Function.Magic */
+
+
+
+
+</style>
+
+
+<style type="text/css">
+  /* Temporary definitions which will become obsolete with Notebook release 5.0 */
+  .ansi-black-fg { color: #3E424D; }
+  .ansi-black-bg { background-color: #3E424D; }
+  .ansi-black-intense-fg { color: #282C36; }
+  .ansi-black-intense-bg { background-color: #282C36; }
+  .ansi-red-fg { color: #E75C58; }
+  .ansi-red-bg { background-color: #E75C58; }
+  .ansi-red-intense-fg { color: #B22B31; }
+  .ansi-red-intense-bg { background-color: #B22B31; }
+  .ansi-green-fg { color: #00A250; }
+  .ansi-green-bg { background-color: #00A250; }
+  .ansi-green-intense-fg { color: #007427; }
+  .ansi-green-intense-bg { background-color: #007427; }
+  .ansi-yellow-fg { color: #DDB62B; }
+  .ansi-yellow-bg { background-color: #DDB62B; }
+  .ansi-yellow-intense-fg { color: #B27D12; }
+  .ansi-yellow-intense-bg { background-color: #B27D12; }
+  .ansi-blue-fg { color: #208FFB; }
+  .ansi-blue-bg { background-color: #208FFB; }
+  .ansi-blue-intense-fg { color: #0065CA; }
+  .ansi-blue-intense-bg { background-color: #0065CA; }
+  .ansi-magenta-fg { color: #D160C4; }
+  .ansi-magenta-bg { background-color: #D160C4; }
+  .ansi-magenta-intense-fg { color: #A03196; }
+  .ansi-magenta-intense-bg { background-color: #A03196; }
+  .ansi-cyan-fg { color: #60C6C8; }
+  .ansi-cyan-bg { background-color: #60C6C8; }
+  .ansi-cyan-intense-fg { color: #258F8F; }
+  .ansi-cyan-intense-bg { background-color: #258F8F; }
+  .ansi-white-fg { color: #C5C1B4; }
+  .ansi-white-bg { background-color: #C5C1B4; }
+  .ansi-white-intense-fg { color: #A1A6B2; }
+  .ansi-white-intense-bg { background-color: #A1A6B2; }
+
+  .ansi-bold { font-weight: bold; }
+</style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+
+<!--   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ -->
+  <title>AWS Jupyter notebook server</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Andrew T. Crooks">
+  <meta name="copyright" content="&copy; Copyright Andrew T. Crooks, 2017">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans%7CMerriweather%7CSource+Code+Pro' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?fa48b562">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://www.andrewtcrooks.com/feeds/all.atom.xml" title="Andrew T. Crooks Full Atom Feed">
+
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/images/dsd-logo_color-dark.svg">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns">
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/images/dsd-logo_color.svg" alt="Andrew T. Crooks"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Andrew T. Crooks</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/andrewtcrooks" title="Twitter">
+            <i class="fa fa-twitter"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://github.com/andrewtcrooks" title="Github">
+            <i class="fa fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="http://linkedin.com/in/andrewtcrooks" title="Linkedin">
+            <i class="fa fa-linkedin"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="http://www.andrewtcrooks.com/feeds/all.atom.xml" title="Subscribe (Atom)">
+            <i class="fa fa-rss"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/blog/">Blog</a></li>
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->
+		<section id="content" class="twelve columns">
+
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2017/07/08/aws-ec2-jupyter-server-script/" title="Permalink to AWS Jupyter notebook server">AWS Jupyter notebook server</a></h1>
+  <h5 class="article-date">July 08, 2017
+ | Tags:         <a class="tag" href="/tag/amazon.html" rel="tag" title="Posts tagged with ">amazon</a>
+        <a class="tag" href="/tag/aws.html" rel="tag" title="Posts tagged with ">aws</a>
+        <a class="tag" href="/tag/ec2.html" rel="tag" title="Posts tagged with ">ec2</a>
+        <a class="tag" href="/tag/data-science.html" rel="tag" title="Posts tagged with ">data science</a>
+        <a class="tag" href="/tag/machine-learning.html" rel="tag" title="Posts tagged with ">machine learning</a>
+        <a class="tag" href="/tag/deep-learning.html" rel="tag" title="Posts tagged with ">deep learning</a>
+        <a class="tag" href="/tag/notebook.html" rel="tag" title="Posts tagged with ">notebook</a>
+        <a class="tag" href="/tag/osx.html" rel="tag" title="Posts tagged with ">osx</a>
+        <a class="tag" href="/tag/mac.html" rel="tag" title="Posts tagged with ">mac</a>
+        <a class="tag" href="/tag/linux.html" rel="tag" title="Posts tagged with ">linux</a>
+        <a class="tag" href="/tag/anaconda.html" rel="tag" title="Posts tagged with ">anaconda</a>
+        <a class="tag" href="/tag/ipython.html" rel="tag" title="Posts tagged with ">ipython</a>
+        <a class="tag" href="/tag/python.html" rel="tag" title="Posts tagged with ">python</a>
+        <a class="tag" href="/tag/python3.html" rel="tag" title="Posts tagged with ">python3</a>
+  </h5>
+  <hr class="small">
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+
+<!--
+  <p><em>Want to work together? My team at <a href="https://sproutsocial.com/">Sprout Social</a> is looking for a <a href="http://sproutsocial.theresumator.com/apply/4HgjTU">Senior Data Scientist</a></em>.</p>
+
+  <hr class="small">
+
+-->
+
+  <p>https://github.com/andrewtcrooks/AWS-Jupyter-notebook-server.git</p>
+<p>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="A-Jupyter-notebook-for-securely-logging-into-AWS-EC2:">A Jupyter notebook for securely logging into AWS EC2:<a class="anchor-link" href="#A-Jupyter-notebook-for-securely-logging-into-AWS-EC2:">¶</a></h2><hr>
+<ul>
+<li>Starts a Jupyter notebook server on AWS EC2</li>
+</ul>
+<ul>
+<li>Avoids man-in-the-middle attacks by verifying the ssh fingerprint before login</li>
+</ul>
+<ul>
+<li><p>Returns instructions with easy to copy/paste commands to:</p>
+<ul>
+<li><p>Log into server instance with ssh</p>
+</li>
+<li><p>Start jupyter on the server</p>
+</li>
+<li><p>View in a browser</p>
+</li>
+<li><p>Terminate instance (i.e. stop paying for it!)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+<h3 id="Requirements">Requirements<a class="anchor-link" href="#Requirements">¶</a></h3><hr>
+<ul>
+<li>Place *.pem and mappings.json into same folder as this notebook before running</li>
+</ul>
+<p><br/></p>
+</hr></hr></div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+
+<span class="c1">###----------------------NOTE---------------------###</span>
+<span class="c1">### This cell will take ~5-10 minutes to complete ###</span>
+<span class="c1">###  and won't print out until it has completed.  ###</span>
+<span class="c1">###-----------------------------------------------###</span>
+
+
+<span class="c1">### contents of aws_start_script.sh ###</span>
+
+<span class="c1"># AWS Deep Learning Jupyter Notebook Server</span>
+
+
+
+<span class="c1">##-------------------------------------##</span>
+<span class="c1">## AWS EC2 Parameters (EDITS REQUIRED) ##</span>
+<span class="c1">##-------------------------------------##</span>
+
+<span class="c1"># CHANGE THE PARAMETERS BELOW TO FIT YOUR PROJECT</span>
+<span class="nv">KEY</span><span class="o">=</span><span class="s2">"merlin"</span> <span class="c1"># AWS keypair file name sans the ".pem"</span>
+<span class="nv">KEY_LOC</span><span class="o">=</span><span class="s2">"/Users/andrew/git/andrewtcrooks.com/content/notebooks"</span>
+
+<span class="c1"># OPTIONAL CHANGE</span>
+<span class="nv">INSTANCE_TYPE</span><span class="o">=</span><span class="s2">"t2.micro"</span> <span class="c1"># Small instance to start with</span>
+                         <span class="c1"># Move to bigger like c4.8xlarge when needed</span>
+<span class="nv">IMAGEID</span><span class="o">=</span><span class="s2">"ami-f1e73689"</span> <span class="c1"># Deep Learning AMI with Conda (Ubuntu)</span>
+<span class="nv">REGION</span><span class="o">=</span><span class="s2">"us-west-2"</span> <span class="c1"># (Change if NOT in Oregon or Washington state)</span>
+
+<span class="c1"># DON'T CHANGE</span>
+<span class="nv">PORT</span><span class="o">=</span><span class="s2">"8888"</span> <span class="c1">#  The localhost port where remote jupyter notebook will be </span>
+            <span class="c1">#   served.</span>
+            <span class="c1">#  If you have a local jupyter server that is already on </span>
+            <span class="c1">#   8888, change your local server port to something else </span>
+            <span class="c1">#   like 8889.</span>
+            <span class="c1">#  REASON: AWS automatically serves jupyter on port 8888 </span>
+            <span class="c1">#   and you only want to have to type 'jupyter notebook'</span>
+            <span class="c1">#   instead of 'jupyter notebook --port:8887' after ssh-ing </span>
+            <span class="c1">#   into the server</span>
+<span class="nv">COUNT</span><span class="o">=</span><span class="s2">"1"</span> <span class="c1"># (Don't Change) Number of instances to create</span>
+<span class="nv">USER</span><span class="o">=</span><span class="s2">"ubuntu"</span> <span class="c1"># (Don't Change)the EC2 linux user name</span>
+
+<span class="c1"># UD is supposed to be boot script but it doesn't seem to work. </span>
+<span class="c1"># Left it blank and used AMI with everything preinstalled instead.</span>
+<span class="nv">UD</span><span class="o">=</span><span class="s2">""</span> <span class="c1">#UD="--user-data file://$HOME/scripts/aws/start.txt"</span>
+<span class="nv">BDM</span><span class="o">=</span><span class="s2">"--block-device-mappings file://mappings.json"</span> 
+
+
+
+<span class="c1">##------------------------##</span>
+<span class="c1">## Start AWS EC2 Instance ##</span>
+<span class="c1">##------------------------##</span>
+
+<span class="c1"># start EC2 instance using above parameters</span>
+<span class="c1"># and save instance id to variable INSTANCE</span>
+<span class="nv">INSTANCE</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>aws ec2 run-instances --image-id <span class="nv">$IMAGEID</span> --instance-type <span class="se">\</span>
+            <span class="nv">$INSTANCE_TYPE</span> --count <span class="nv">$COUNT</span> --key-name <span class="nv">$KEY</span> --region <span class="se">\</span>
+            <span class="nv">$REGION</span> --query <span class="s1">'Instances[0].InstanceId'</span> <span class="nv">$BDM</span> <span class="nv">$UD</span><span class="k">)</span><span class="s2">"</span>
+
+<span class="c1"># remove quotes around INSTANCE id</span>
+<span class="nv">INSTANCE</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">INSTANCE</span><span class="p">%</span><span class="se">\"</span><span class="si">}</span><span class="s2">"</span>
+<span class="nv">INSTANCE</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">INSTANCE</span><span class="p">#</span><span class="se">\"</span><span class="si">}</span><span class="s2">"</span>
+
+
+
+<span class="c1">##-----------------##</span>
+<span class="c1">## Verify Instance ##</span>
+<span class="c1">##-----------------##</span>
+
+<span class="c1"># seems to take about 5-6 minutes for SSH fingerprints to show</span>
+<span class="c1"># up in the output. wait for 2.5 minutes, then start polling output</span>
+<span class="c1">#echo $'\n'</span>
+<span class="nb">echo</span> <span class="s2">"Waiting for </span><span class="nv">$INSTANCE</span><span class="s2"> to boot"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+
+<span class="nv">i</span><span class="o">=</span><span class="m">0</span>
+<span class="k">while</span> <span class="o">[</span> <span class="m">1</span> <span class="o">]</span>
+<span class="k">do</span>
+
+<span class="nv">FINGERPRINTS</span><span class="o">=</span><span class="k">$(</span>aws ec2 get-console-output --instance-id <span class="nv">$INSTANCE</span> <span class="p">|</span> <span class="se">\</span>
+                egrep -m <span class="m">1</span> -o <span class="s1">'([0-9a-f][0-9a-f]:){15}[0-9a-f][0-9a-f]'</span><span class="k">)</span>
+
+<span class="nv">SSH_SERVER_KEY</span><span class="o">=</span><span class="k">$(</span>aws ec2 get-console-output --instance-id <span class="nv">$INSTANCE</span> <span class="p">|</span> <span class="se">\</span>
+                sed -n <span class="s1">'s/^.*nssh-rsa //p'</span> <span class="p">|</span> sed <span class="s1">'s/ root@ip-.*$//g'</span><span class="k">)</span>
+
+
+<span class="c1"># Check for FINGERPRINT every ~10 seconds (9 + runtime)</span>
+<span class="c1"># Print "Booting..." every 60 seconds</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$FINGERPRINTS</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">""</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+        sleep <span class="m">9</span>
+        <span class="nv">i</span><span class="o">=</span><span class="sb">`</span>expr <span class="nv">$i</span> + <span class="m">1</span><span class="sb">`</span>
+        <span class="nv">m</span><span class="o">=</span><span class="sb">`</span>expr <span class="nv">$i</span> % <span class="m">6</span><span class="sb">`</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$m</span><span class="s2">"</span> -ne <span class="m">0</span> <span class="o">]</span>
+        <span class="k">then</span>
+            <span class="k">continue</span>
+        <span class="k">fi</span>
+        <span class="nv">n</span><span class="o">=</span><span class="k">$((</span> i <span class="o">/</span> <span class="m">6</span> <span class="k">))</span>
+        <span class="nb">echo</span> <span class="s2">"Booting...(</span><span class="nv">$n</span><span class="s2"> min)"</span>
+    <span class="k">else</span>
+        <span class="nb">break</span>
+    <span class="k">fi</span>
+<span class="k">done</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"Expected fingerprints are </span><span class="nv">$FINGERPRINTS</span><span class="s2">"</span>
+
+<span class="c1"># get hostname for the instance</span>
+<span class="nv">HOST</span><span class="o">=</span><span class="k">$(</span>aws ec2 describe-instances <span class="p">|</span> <span class="se">\</span>
+        grep -m <span class="m">1</span> us-west-2.compute.amazonaws.com <span class="p">|</span> <span class="se">\</span>
+        egrep -o <span class="s1">'ec2(-[0-9]+){4}.us-west-2.compute.amazonaws.com'</span><span class="k">)</span>
+<span class="nv">HOST_IP</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$HOST</span><span class="s2">"</span> <span class="p">|</span> sed <span class="s2">"s/ec2-//g;s/\..*//g;s/-/./g"</span><span class="k">)</span>
+<span class="nv">HOST_ALIAS</span><span class="o">=</span><span class="s2">"aws-ec2"</span>
+<span class="nb">echo</span> <span class="s2">"Host is </span><span class="nv">$HOST</span><span class="s2"> located at </span><span class="nv">$HOST_IP</span><span class="s2">"</span>
+
+<span class="c1">#cat host.key >> ~/.ssh/known_hosts 2>/dev/null</span>
+
+<span class="c1"># ensure proper permissions are set on .pem file</span>
+chmod <span class="m">400</span> <span class="nv">$KEY_LOC</span>/<span class="nv">$KEY</span>.pem
+
+<span class="c1"># Read the private OpenSSH format from the *.pem file </span>
+<span class="c1"># and output public key to host.key</span>
+ssh-keygen -yf <span class="nv">$KEY_LOC</span>/<span class="nv">$KEY</span>.pem > host.key
+<span class="c1"># Output the fingerprint of the public key to host.fingerprint.</span>
+ssh-keygen -lf host.key > host.fingerprint
+<span class="c1"># Store fingerprint from host.fingerprint into bash var for printing</span>
+<span class="nb">read</span> len ACTUAL_FINGERPRINTS host rsa < host.fingerprint
+<span class="nb">echo</span> <span class="s2">"Actual fingerprints are </span><span class="nv">$ACTUAL_FINGERPRINTS</span><span class="s2">"</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$ACTUAL_FINGERPRINTS</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">"</span><span class="nv">$FINGERPRINTS</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+
+<span class="nb">echo</span> <span class="s2">"Fingerprints match, adding to known hosts"</span>
+<span class="nb">echo</span> <span class="s2">"Connecting..."</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+
+
+
+<span class="c1">### At this point the instance has been started, it has completed </span>
+<span class="c1">### booting, ssh fingerprints have been validated. Next step is to </span>
+<span class="c1">### store the credentials in known_hosts in your ~/.ssh folder</span>
+
+
+
+<span class="c1">##-------------------##</span>
+<span class="c1">## Store Credentials ##</span>
+<span class="c1">##-------------------##</span>
+
+<span class="c1"># Removes ec2* line(s) in known_hosts (e.g. from the last ec2 instance)</span>
+sed -i <span class="s1">''</span> <span class="s1">'/^ec2/d'</span> ~/.ssh/known_hosts
+
+<span class="c1"># Make known_hosts entry from "HOST,HOST_IP ssh-rsa SSH_SERVER_KEY'</span>
+<span class="c1"># and store in server.key</span>
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$HOST</span><span class="s2">,</span><span class="nv">$HOST_IP</span><span class="s2"> ssh-rsa </span><span class="nv">$SSH_SERVER_KEY</span><span class="s2">"</span> > server.key
+
+<span class="c1">## Optional: Hash server key in known hosts</span>
+<span class="c1">#ssh-keygen -q -f -H server.key</span>
+
+<span class="c1"># Add server.key to known_hosts</span>
+cat server.key >> ~/.ssh/known_hosts <span class="m">2</span>>/dev/null
+
+<span class="c1"># Delete copies of ssh server key</span>
+gshred -u server.key host.key host.fingerprint
+
+
+
+<span class="c1">##-------------##</span>
+<span class="c1">## Upload Data ##</span>
+<span class="c1">##-------------##</span>
+
+<span class="nb">echo</span> <span class="s2">"Uploading Data"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+
+<span class="c1"># Copy jupyter custom config files to instance</span>
+scp -i <span class="nv">$KEY_LOC</span>/<span class="nv">$KEY</span>.pem -rq ~/.jupyter ubuntu@<span class="nv">$HOST</span>:~/.jupyter
+
+<span class="c1"># # Copy installation script to instance since --data-file just hangs </span>
+<span class="c1"># scp -i $KEY.pem ~/scripts/aws/start.txt ubuntu@$HOST:~/start</span>
+
+<span class="c1"># # Copy data files to instance</span>
+<span class="c1"># scp -i $KEY.pem -r ~/data ubuntu@$HOST:~/data</span>
+
+
+
+<span class="c1">##------------------##</span>
+<span class="c1">## Ready to Connect ##</span>
+<span class="c1">##------------------##</span>
+
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"Ready to connect"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"  In a terminal run:"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"    ssh -i </span><span class="nv">$KEY_LOC</span><span class="s2">/</span><span class="nv">$KEY</span><span class="s2">.pem -L </span><span class="nv">$PORT</span><span class="s2">:127.0.0.1:8888 </span><span class="nv">$USER</span><span class="s2">@</span><span class="nv">$HOST</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"  Then in the same terminal run:"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"    jupyter notebook"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"  Then in the same terminal:"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"    (CMD + click) on the http://localhost:8888?token..... link"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"  To end session cleanly, in the same terminal:"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"    1. Type (Ctrl + C) to kill notebook server and enter 'y' to \</span>
+<span class="s2">confirm"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"    2. Then run:"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"         exit"</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"    3. Then run: "</span>
+<span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"         aws ec2 terminate-instances --instance-ids </span><span class="nv">$INSTANCE</span><span class="s2">"</span>
+
+
+<span class="k">else</span>
+
+<span class="nb">echo</span> <span class="s2">"Fingerprints do not match"</span>
+
+<span class="k">fi</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Waiting for i-014f48f62eb841fa1 to boot
+
+Booting...(1 min)
+Booting...(2 min)
+Booting...(3 min)
+Booting...(4 min)
+
+Expected fingerprints are d4:26:c0:7c:77:b1:63:ff:01:37:48:ad:2b:23:c5:4d
+Host is ec2-52-41-173-172.us-west-2.compute.amazonaws.com located at 52.41.173.172
+Actual fingerprints are d4:26:c0:7c:77:b1:63:ff:01:37:48:ad:2b:23:c5:4d
+Fingerprints match, adding to known hosts
+Connecting...
+
+Uploading Data
+
+
+
+
+Ready to connect
+
+
+  In a terminal run:
+
+    ssh -i /Users/andrew/git/andrewtcrooks.com/content/notebooks/merlin.pem -L 8888:127.0.0.1:8888 ubuntu@ec2-52-41-173-172.us-west-2.compute.amazonaws.com
+
+
+  Then in the same terminal run:
+
+    jupyter notebook
+
+
+  Then in the same terminal:
+
+    (CMD + click) on the http://localhost:8888?token..... link
+
+
+  To end session cleanly, in the same terminal:
+
+    1. Type (Ctrl + C) to kill notebook server and enter 'y' to confirm
+
+    2. Then run:
+
+         exit
+
+    3. Then run: 
+
+         aws ec2 terminate-instances --instance-ids i-014f48f62eb841fa1
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Required-files-(mappings.json)">Required files (mappings.json)<a class="anchor-link" href="#Required-files-(mappings.json)">¶</a></h1><p>EBS storage volume parameters for instance</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
+
+<span class="c1">// copy text below here into mappings.json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">"DeviceName"</span><span class="o">:</span> <span class="s2">"/dev/sda1"</span><span class="p">,</span>
+    <span class="s2">"Ebs"</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">"VolumeSize"</span><span class="o">:</span> <span class="mi">120</span><span class="p">,</span>
+      <span class="s2">"VolumeType"</span><span class="o">:</span> <span class="s2">"io1"</span><span class="p">,</span>
+      <span class="s2">"Iops"</span><span class="o">:</span> <span class="mi">6000</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div id="568bf42c-bc28-4f0e-9f90-87fa1eaa711e"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#568bf42c-bc28-4f0e-9f90-87fa1eaa711e');
+
+// copy text below here into mappings.json
+
+[
+  {
+    "DeviceName": "/dev/sda1",
+    "Ebs": {
+      "VolumeSize": 120,
+      "VolumeType": "io1",
+      "Iops": 6000
+    }
+  }
+]
+</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</p>
+
+  </div>
+
+  <hr class="small">
+  <div class="article-sharing">
+    <div>
+      <ul>
+
+
+      </ul>
+    </div>
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small">
+    
+  </div>
+
+		</section><!-- twelve columns -->
+
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="https://www.a2hosting.com/">A2</a>.</p>
+  <p>&copy; Copyright Andrew T. Crooks, 2017</p>
+</footer>
+	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-99294612-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+
+  <!-- JavaScript
+  =================================================== -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+
+</body> <!-- End body -->
+
+</html>

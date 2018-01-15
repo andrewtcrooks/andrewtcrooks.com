@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrew T. Crooks - tutorials</title><link href="http://www.andrewtcrooks.com/" rel="alternate"></link><link href="http://www.andrewtcrooks.com/feeds/tutorials.atom.xml" rel="self"></link><id>http://www.andrewtcrooks.com/</id><updated>2017-05-17T00:00:00-07:00</updated><entry><title>How to setup Jupyter notebooks (Mac)</title><link href="http://www.andrewtcrooks.com/2017/05/17/jupyter-notebook-setup/" rel="alternate"></link><published>2017-05-17T00:00:00-07:00</published><updated>2017-05-17T00:00:00-07:00</updated><author><name>Andrew C.</name></author><id>tag:www.andrewtcrooks.com,2017-05-17:/2017/05/17/jupyter-notebook-setup/</id><summary type="html">&lt;p&gt;How to setup Jupyter Notebooks on Mac OS X.&lt;/p&gt;</summary><content type="html">&lt;p&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Follow the directions below:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install the latest version of Anaconda in the default location (~/anaconda/bin)                        [graphical installer recommended]&lt;/li&gt;
+&lt;li&gt;Run Anaconda Navigator&lt;/li&gt;
+&lt;li&gt;Select "Environmants" tab on the left&lt;/li&gt;
+&lt;li&gt;Above the list of package names, change the drop-down menu from "Installed" to"Upgradable"&lt;/li&gt;
+&lt;li&gt;In the "Search Packages" field, type "jupyter"&lt;/li&gt;
+&lt;li&gt;Click on the little blue arrow to the right of each package name then select "Apply" at the bottom right.&lt;/li&gt;
+&lt;li&gt;Run the following lines of code from a terminal to create a folder for the notebooks, generate the default configuration file, point jupyter to the newly created notebook folder, and set the static password (don't skip this!) &lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="n"&gt;notebooks&lt;/span&gt; &lt;span class="c1"&gt;# create dir&lt;/span&gt;
+&lt;span class="n"&gt;jupyter&lt;/span&gt; &lt;span class="n"&gt;notebook&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;generate&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="c1"&gt;# generate ~/.jupyter/jupyter_notebook_config.py&lt;/span&gt;
+&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"c.NotebookApp.notebook_dir = '~/notebooks'"&lt;/span&gt; &lt;span class="o"&gt;&gt;&gt;&lt;/span&gt; &lt;span class="o"&gt;~/.&lt;/span&gt;&lt;span class="n"&gt;jupyter&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;jupyter_notebook_config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; 
+&lt;span class="n"&gt;jupyter&lt;/span&gt; &lt;span class="n"&gt;notebook&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="c1"&gt;# set password&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;After entering a password, run the remaining code below.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="n"&gt;scripts&lt;/span&gt; &lt;span class="c1"&gt;# create dir&lt;/span&gt;
+&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"~/anaconda/bin/jupyter notebook --port=8889 --no-browser"&lt;/span&gt; &lt;span class="o"&gt;&gt;&gt;&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;jpy_nbk_start&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt; 
+&lt;span class="n"&gt;chmod&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;jpy_nbk_start&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="c1"&gt;# make script executable&lt;/span&gt;
+&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;jpy_nbk_start&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="c1"&gt;# run script&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;The last part of the code made a directory for shell scripts, created a shell script to start the jupyter notebook server, made the script executable, and then ran the script.&lt;/p&gt;
+&lt;p&gt;Everything is now installed and running.&lt;/p&gt;
+&lt;p&gt;To access the notebook server, follow these final steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open localhost:8889 in a web browser to access your Jupyter notebook directory.&lt;/li&gt;
+&lt;li&gt;At the password promt, enter the password you entered after the first batch of code.&lt;/li&gt;
+&lt;li&gt;Let your browser remember the password so you don't have to type it every time you reload the page.&lt;/li&gt;
+&lt;li&gt;Save a bookmark on the page you come to after opening localhost:8889.&lt;/li&gt;
+&lt;li&gt;Select "New" from the upper right hand corner. Then select Python 3.&lt;/li&gt;
+&lt;li&gt;Type your python code into a cell and hit shift+enter on your keyboard to run the cell&lt;/li&gt;
+&lt;li&gt;From the menu bar, select Insert -&gt; Cell Above or Insert -&gt; Cell below to add cell relative to the currently selected one.&lt;/li&gt;
+&lt;li&gt;Enjoy the possibilities!&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Pro Tip: Run ~/scripts/jpy_nbk_start.sh automatically at boot for a persistent notebook server on your computer! Otherwise, the script will need to be run again after every reboot.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;
+&lt;/p&gt;</content><category term="jupyter"></category><category term="notebook"></category><category term="osx"></category><category term="mac"></category><category term="linux"></category><category term="anaconda"></category><category term="ipython"></category><category term="python"></category><category term="python3"></category></entry></feed>

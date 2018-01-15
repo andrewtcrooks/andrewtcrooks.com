@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrew T. Crooks - machine learning</title><link href="http://www.andrewtcrooks.com/" rel="alternate"></link><link href="http://www.andrewtcrooks.com/feeds/tag/machine-learning.atom.xml" rel="self"></link><id>http://www.andrewtcrooks.com/</id><updated>2017-07-08T00:00:00-07:00</updated><entry><title>AWS Jupyter notebook server</title><link href="http://www.andrewtcrooks.com/2017/07/08/aws-ec2-jupyter-server-script/" rel="alternate"></link><published>2017-07-08T00:00:00-07:00</published><updated>2017-07-08T00:00:00-07:00</updated><author><name>Andrew C.</name></author><id>tag:www.andrewtcrooks.com,2017-07-08:/2017/07/08/aws-ec2-jupyter-server-script/</id><summary type="html">&lt;p&gt;Script for starting a Jupyter notebook server on AWS EC2.&lt;/p&gt;</summary><content type="html">&lt;p&gt;https://github.com/andrewtcrooks/AWS-Jupyter-notebook-server.git&lt;/p&gt;
+&lt;p&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h2 id="A-Jupyter-notebook-for-securely-logging-into-AWS-EC2:"&gt;A Jupyter notebook for securely logging into AWS EC2:&lt;a class="anchor-link" href="#A-Jupyter-notebook-for-securely-logging-into-AWS-EC2:"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;Starts a Jupyter notebook server on AWS EC2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Avoids man-in-the-middle attacks by verifying the ssh fingerprint before login&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Returns instructions with easy to copy/paste commands to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Log into server instance with ssh&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Start jupyter on the server&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;View in a browser&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Terminate instance (i.e. stop paying for it!)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id="Requirements"&gt;Requirements&lt;a class="anchor-link" href="#Requirements"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;Place *.pem and mappings.json into same folder as this notebook before running&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+&lt;/hr&gt;&lt;/hr&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%bash
+
+&lt;span class="c1"&gt;###----------------------NOTE---------------------###&lt;/span&gt;
+&lt;span class="c1"&gt;### This cell will take ~5-10 minutes to complete ###&lt;/span&gt;
+&lt;span class="c1"&gt;###  and won't print out until it has completed.  ###&lt;/span&gt;
+&lt;span class="c1"&gt;###-----------------------------------------------###&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;### contents of aws_start_script.sh ###&lt;/span&gt;
+
+&lt;span class="c1"&gt;# AWS Deep Learning Jupyter Notebook Server&lt;/span&gt;
+
+
+
+&lt;span class="c1"&gt;##-------------------------------------##&lt;/span&gt;
+&lt;span class="c1"&gt;## AWS EC2 Parameters (EDITS REQUIRED) ##&lt;/span&gt;
+&lt;span class="c1"&gt;##-------------------------------------##&lt;/span&gt;
+
+&lt;span class="c1"&gt;# CHANGE THE PARAMETERS BELOW TO FIT YOUR PROJECT&lt;/span&gt;
+&lt;span class="nv"&gt;KEY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"merlin"&lt;/span&gt; &lt;span class="c1"&gt;# AWS keypair file name sans the ".pem"&lt;/span&gt;
+&lt;span class="nv"&gt;KEY_LOC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/Users/andrew/git/andrewtcrooks.com/content/notebooks"&lt;/span&gt;
+
+&lt;span class="c1"&gt;# OPTIONAL CHANGE&lt;/span&gt;
+&lt;span class="nv"&gt;INSTANCE_TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"t2.micro"&lt;/span&gt; &lt;span class="c1"&gt;# Small instance to start with&lt;/span&gt;
+                         &lt;span class="c1"&gt;# Move to bigger like c4.8xlarge when needed&lt;/span&gt;
+&lt;span class="nv"&gt;IMAGEID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"ami-f1e73689"&lt;/span&gt; &lt;span class="c1"&gt;# Deep Learning AMI with Conda (Ubuntu)&lt;/span&gt;
+&lt;span class="nv"&gt;REGION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"us-west-2"&lt;/span&gt; &lt;span class="c1"&gt;# (Change if NOT in Oregon or Washington state)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# DON'T CHANGE&lt;/span&gt;
+&lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"8888"&lt;/span&gt; &lt;span class="c1"&gt;#  The localhost port where remote jupyter notebook will be &lt;/span&gt;
+            &lt;span class="c1"&gt;#   served.&lt;/span&gt;
+            &lt;span class="c1"&gt;#  If you have a local jupyter server that is already on &lt;/span&gt;
+            &lt;span class="c1"&gt;#   8888, change your local server port to something else &lt;/span&gt;
+            &lt;span class="c1"&gt;#   like 8889.&lt;/span&gt;
+            &lt;span class="c1"&gt;#  REASON: AWS automatically serves jupyter on port 8888 &lt;/span&gt;
+            &lt;span class="c1"&gt;#   and you only want to have to type 'jupyter notebook'&lt;/span&gt;
+            &lt;span class="c1"&gt;#   instead of 'jupyter notebook --port:8887' after ssh-ing &lt;/span&gt;
+            &lt;span class="c1"&gt;#   into the server&lt;/span&gt;
+&lt;span class="nv"&gt;COUNT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"1"&lt;/span&gt; &lt;span class="c1"&gt;# (Don't Change) Number of instances to create&lt;/span&gt;
+&lt;span class="nv"&gt;USER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"ubuntu"&lt;/span&gt; &lt;span class="c1"&gt;# (Don't Change)the EC2 linux user name&lt;/span&gt;
+
+&lt;span class="c1"&gt;# UD is supposed to be boot script but it doesn't seem to work. &lt;/span&gt;
+&lt;span class="c1"&gt;# Left it blank and used AMI with everything preinstalled instead.&lt;/span&gt;
+&lt;span class="nv"&gt;UD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt; &lt;span class="c1"&gt;#UD="--user-data file://$HOME/scripts/aws/start.txt"&lt;/span&gt;
+&lt;span class="nv"&gt;BDM&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"--block-device-mappings file://mappings.json"&lt;/span&gt; 
+
+
+
+&lt;span class="c1"&gt;##------------------------##&lt;/span&gt;
+&lt;span class="c1"&gt;## Start AWS EC2 Instance ##&lt;/span&gt;
+&lt;span class="c1"&gt;##------------------------##&lt;/span&gt;
+
+&lt;span class="c1"&gt;# start EC2 instance using above parameters&lt;/span&gt;
+&lt;span class="c1"&gt;# and save instance id to variable INSTANCE&lt;/span&gt;
+&lt;span class="nv"&gt;INSTANCE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;aws ec2 run-instances --image-id &lt;span class="nv"&gt;$IMAGEID&lt;/span&gt; --instance-type &lt;span class="se"&gt;\&lt;/span&gt;
+            &lt;span class="nv"&gt;$INSTANCE_TYPE&lt;/span&gt; --count &lt;span class="nv"&gt;$COUNT&lt;/span&gt; --key-name &lt;span class="nv"&gt;$KEY&lt;/span&gt; --region &lt;span class="se"&gt;\&lt;/span&gt;
+            &lt;span class="nv"&gt;$REGION&lt;/span&gt; --query &lt;span class="s1"&gt;'Instances[0].InstanceId'&lt;/span&gt; &lt;span class="nv"&gt;$BDM&lt;/span&gt; &lt;span class="nv"&gt;$UD&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+
+&lt;span class="c1"&gt;# remove quotes around INSTANCE id&lt;/span&gt;
+&lt;span class="nv"&gt;INSTANCE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;INSTANCE&lt;/span&gt;&lt;span class="p"&gt;%&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;span class="nv"&gt;INSTANCE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;INSTANCE&lt;/span&gt;&lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+
+
+
+&lt;span class="c1"&gt;##-----------------##&lt;/span&gt;
+&lt;span class="c1"&gt;## Verify Instance ##&lt;/span&gt;
+&lt;span class="c1"&gt;##-----------------##&lt;/span&gt;
+
+&lt;span class="c1"&gt;# seems to take about 5-6 minutes for SSH fingerprints to show&lt;/span&gt;
+&lt;span class="c1"&gt;# up in the output. wait for 2.5 minutes, then start polling output&lt;/span&gt;
+&lt;span class="c1"&gt;#echo $'\n'&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Waiting for &lt;/span&gt;&lt;span class="nv"&gt;$INSTANCE&lt;/span&gt;&lt;span class="s2"&gt; to boot"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+
+&lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;do&lt;/span&gt;
+
+&lt;span class="nv"&gt;FINGERPRINTS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;aws ec2 get-console-output --instance-id &lt;span class="nv"&gt;$INSTANCE&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+                egrep -m &lt;span class="m"&gt;1&lt;/span&gt; -o &lt;span class="s1"&gt;'([0-9a-f][0-9a-f]:){15}[0-9a-f][0-9a-f]'&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+
+&lt;span class="nv"&gt;SSH_SERVER_KEY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;aws ec2 get-console-output --instance-id &lt;span class="nv"&gt;$INSTANCE&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+                sed -n &lt;span class="s1"&gt;'s/^.*nssh-rsa //p'&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; sed &lt;span class="s1"&gt;'s/ root@ip-.*$//g'&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;# Check for FINGERPRINT every ~10 seconds (9 + runtime)&lt;/span&gt;
+&lt;span class="c1"&gt;# Print "Booting..." every 60 seconds&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$FINGERPRINTS&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt;
+        sleep &lt;span class="m"&gt;9&lt;/span&gt;
+        &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;expr &lt;span class="nv"&gt;$i&lt;/span&gt; + &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+        &lt;span class="nv"&gt;m&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;expr &lt;span class="nv"&gt;$i&lt;/span&gt; % &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$m&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -ne &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;
+        &lt;span class="k"&gt;then&lt;/span&gt;
+            &lt;span class="k"&gt;continue&lt;/span&gt;
+        &lt;span class="k"&gt;fi&lt;/span&gt;
+        &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt; i &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt; &lt;span class="k"&gt;))&lt;/span&gt;
+        &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Booting...(&lt;/span&gt;&lt;span class="nv"&gt;$n&lt;/span&gt;&lt;span class="s2"&gt; min)"&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+        &lt;span class="nb"&gt;break&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Expected fingerprints are &lt;/span&gt;&lt;span class="nv"&gt;$FINGERPRINTS&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+
+&lt;span class="c1"&gt;# get hostname for the instance&lt;/span&gt;
+&lt;span class="nv"&gt;HOST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;aws ec2 describe-instances &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+        grep -m &lt;span class="m"&gt;1&lt;/span&gt; us-west-2.compute.amazonaws.com &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+        egrep -o &lt;span class="s1"&gt;'ec2(-[0-9]+){4}.us-west-2.compute.amazonaws.com'&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;HOST_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$HOST&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; sed &lt;span class="s2"&gt;"s/ec2-//g;s/\..*//g;s/-/./g"&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;HOST_ALIAS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"aws-ec2"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Host is &lt;/span&gt;&lt;span class="nv"&gt;$HOST&lt;/span&gt;&lt;span class="s2"&gt; located at &lt;/span&gt;&lt;span class="nv"&gt;$HOST_IP&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+
+&lt;span class="c1"&gt;#cat host.key &gt;&gt; ~/.ssh/known_hosts 2&gt;/dev/null&lt;/span&gt;
+
+&lt;span class="c1"&gt;# ensure proper permissions are set on .pem file&lt;/span&gt;
+chmod &lt;span class="m"&gt;400&lt;/span&gt; &lt;span class="nv"&gt;$KEY_LOC&lt;/span&gt;/&lt;span class="nv"&gt;$KEY&lt;/span&gt;.pem
+
+&lt;span class="c1"&gt;# Read the private OpenSSH format from the *.pem file &lt;/span&gt;
+&lt;span class="c1"&gt;# and output public key to host.key&lt;/span&gt;
+ssh-keygen -yf &lt;span class="nv"&gt;$KEY_LOC&lt;/span&gt;/&lt;span class="nv"&gt;$KEY&lt;/span&gt;.pem &gt; host.key
+&lt;span class="c1"&gt;# Output the fingerprint of the public key to host.fingerprint.&lt;/span&gt;
+ssh-keygen -lf host.key &gt; host.fingerprint
+&lt;span class="c1"&gt;# Store fingerprint from host.fingerprint into bash var for printing&lt;/span&gt;
+&lt;span class="nb"&gt;read&lt;/span&gt; len ACTUAL_FINGERPRINTS host rsa &lt; host.fingerprint
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Actual fingerprints are &lt;/span&gt;&lt;span class="nv"&gt;$ACTUAL_FINGERPRINTS&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$ACTUAL_FINGERPRINTS&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$FINGERPRINTS&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Fingerprints match, adding to known hosts"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Connecting..."&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+
+
+
+&lt;span class="c1"&gt;### At this point the instance has been started, it has completed &lt;/span&gt;
+&lt;span class="c1"&gt;### booting, ssh fingerprints have been validated. Next step is to &lt;/span&gt;
+&lt;span class="c1"&gt;### store the credentials in known_hosts in your ~/.ssh folder&lt;/span&gt;
+
+
+
+&lt;span class="c1"&gt;##-------------------##&lt;/span&gt;
+&lt;span class="c1"&gt;## Store Credentials ##&lt;/span&gt;
+&lt;span class="c1"&gt;##-------------------##&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Removes ec2* line(s) in known_hosts (e.g. from the last ec2 instance)&lt;/span&gt;
+sed -i &lt;span class="s1"&gt;''&lt;/span&gt; &lt;span class="s1"&gt;'/^ec2/d'&lt;/span&gt; ~/.ssh/known_hosts
+
+&lt;span class="c1"&gt;# Make known_hosts entry from "HOST,HOST_IP ssh-rsa SSH_SERVER_KEY'&lt;/span&gt;
+&lt;span class="c1"&gt;# and store in server.key&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$HOST&lt;/span&gt;&lt;span class="s2"&gt;,&lt;/span&gt;&lt;span class="nv"&gt;$HOST_IP&lt;/span&gt;&lt;span class="s2"&gt; ssh-rsa &lt;/span&gt;&lt;span class="nv"&gt;$SSH_SERVER_KEY&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &gt; server.key
+
+&lt;span class="c1"&gt;## Optional: Hash server key in known hosts&lt;/span&gt;
+&lt;span class="c1"&gt;#ssh-keygen -q -f -H server.key&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Add server.key to known_hosts&lt;/span&gt;
+cat server.key &gt;&gt; ~/.ssh/known_hosts &lt;span class="m"&gt;2&lt;/span&gt;&gt;/dev/null
+
+&lt;span class="c1"&gt;# Delete copies of ssh server key&lt;/span&gt;
+gshred -u server.key host.key host.fingerprint
+
+
+
+&lt;span class="c1"&gt;##-------------##&lt;/span&gt;
+&lt;span class="c1"&gt;## Upload Data ##&lt;/span&gt;
+&lt;span class="c1"&gt;##-------------##&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Uploading Data"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Copy jupyter custom config files to instance&lt;/span&gt;
+scp -i &lt;span class="nv"&gt;$KEY_LOC&lt;/span&gt;/&lt;span class="nv"&gt;$KEY&lt;/span&gt;.pem -rq ~/.jupyter ubuntu@&lt;span class="nv"&gt;$HOST&lt;/span&gt;:~/.jupyter
+
+&lt;span class="c1"&gt;# # Copy installation script to instance since --data-file just hangs &lt;/span&gt;
+&lt;span class="c1"&gt;# scp -i $KEY.pem ~/scripts/aws/start.txt ubuntu@$HOST:~/start&lt;/span&gt;
+
+&lt;span class="c1"&gt;# # Copy data files to instance&lt;/span&gt;
+&lt;span class="c1"&gt;# scp -i $KEY.pem -r ~/data ubuntu@$HOST:~/data&lt;/span&gt;
+
+
+
+&lt;span class="c1"&gt;##------------------##&lt;/span&gt;
+&lt;span class="c1"&gt;## Ready to Connect ##&lt;/span&gt;
+&lt;span class="c1"&gt;##------------------##&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Ready to connect"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"  In a terminal run:"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"    ssh -i &lt;/span&gt;&lt;span class="nv"&gt;$KEY_LOC&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;$KEY&lt;/span&gt;&lt;span class="s2"&gt;.pem -L &lt;/span&gt;&lt;span class="nv"&gt;$PORT&lt;/span&gt;&lt;span class="s2"&gt;:127.0.0.1:8888 &lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt;&lt;span class="s2"&gt;@&lt;/span&gt;&lt;span class="nv"&gt;$HOST&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"  Then in the same terminal run:"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"    jupyter notebook"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"  Then in the same terminal:"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"    (CMD + click) on the http://localhost:8888?token..... link"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"  To end session cleanly, in the same terminal:"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"    1. Type (Ctrl + C) to kill notebook server and enter 'y' to \&lt;/span&gt;
+&lt;span class="s2"&gt;confirm"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"    2. Then run:"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"         exit"&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"    3. Then run: "&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"         aws ec2 terminate-instances --instance-ids &lt;/span&gt;&lt;span class="nv"&gt;$INSTANCE&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+
+
+&lt;span class="k"&gt;else&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Fingerprints do not match"&lt;/span&gt;
+
+&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;Waiting for i-014f48f62eb841fa1 to boot
+
+Booting...(1 min)
+Booting...(2 min)
+Booting...(3 min)
+Booting...(4 min)
+
+Expected fingerprints are d4:26:c0:7c:77:b1:63:ff:01:37:48:ad:2b:23:c5:4d
+Host is ec2-52-41-173-172.us-west-2.compute.amazonaws.com located at 52.41.173.172
+Actual fingerprints are d4:26:c0:7c:77:b1:63:ff:01:37:48:ad:2b:23:c5:4d
+Fingerprints match, adding to known hosts
+Connecting...
+
+Uploading Data
+
+
+
+
+Ready to connect
+
+
+  In a terminal run:
+
+    ssh -i /Users/andrew/git/andrewtcrooks.com/content/notebooks/merlin.pem -L 8888:127.0.0.1:8888 ubuntu@ec2-52-41-173-172.us-west-2.compute.amazonaws.com
+
+
+  Then in the same terminal run:
+
+    jupyter notebook
+
+
+  Then in the same terminal:
+
+    (CMD + click) on the http://localhost:8888?token..... link
+
+
+  To end session cleanly, in the same terminal:
+
+    1. Type (Ctrl + C) to kill notebook server and enter 'y' to confirm
+
+    2. Then run:
+
+         exit
+
+    3. Then run: 
+
+         aws ec2 terminate-instances --instance-ids i-014f48f62eb841fa1
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h1 id="Required-files-(mappings.json)"&gt;Required files (mappings.json)&lt;a class="anchor-link" href="#Required-files-(mappings.json)"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;EBS storage volume parameters for instance&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="nx"&gt;javascript&lt;/span&gt;
+
+&lt;span class="c1"&gt;// copy text below here into mappings.json&lt;/span&gt;
+
+&lt;span class="p"&gt;[&lt;/span&gt;
+  &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s2"&gt;"DeviceName"&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"/dev/sda1"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s2"&gt;"Ebs"&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="s2"&gt;"VolumeSize"&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;120&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="s2"&gt;"VolumeType"&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"io1"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="s2"&gt;"Iops"&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;6000&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div id="568bf42c-bc28-4f0e-9f90-87fa1eaa711e"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_javascript "&gt;
+&lt;script type="text/javascript"&gt;
+var element = $('#568bf42c-bc28-4f0e-9f90-87fa1eaa711e');
+
+// copy text below here into mappings.json
+
+[
+  {
+    "DeviceName": "/dev/sda1",
+    "Ebs": {
+      "VolumeSize": 120,
+      "VolumeType": "io1",
+      "Iops": 6000
+    }
+  }
+]
+&lt;/script&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;
+&lt;/p&gt;</content><category term="amazon"></category><category term="aws"></category><category term="ec2"></category><category term="data science"></category><category term="machine learning"></category><category term="deep learning"></category><category term="notebook"></category><category term="osx"></category><category term="mac"></category><category term="linux"></category><category term="anaconda"></category><category term="ipython"></category><category term="python"></category><category term="python3"></category></entry></feed>

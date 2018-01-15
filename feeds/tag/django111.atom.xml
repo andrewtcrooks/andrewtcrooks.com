@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrew T. Crooks - django1.11</title><link href="http://www.andrewtcrooks.com/" rel="alternate"></link><link href="http://www.andrewtcrooks.com/feeds/tag/django111.atom.xml" rel="self"></link><id>http://www.andrewtcrooks.com/</id><updated>2017-09-22T00:00:00-07:00</updated><entry><title>Task Organizer Django Web App</title><link href="http://www.andrewtcrooks.com/2017/09/22/taskorganizer/" rel="alternate"></link><published>2017-09-22T00:00:00-07:00</published><updated>2017-09-22T00:00:00-07:00</updated><author><name>Andrew C.</name></author><id>tag:www.andrewtcrooks.com,2017-09-22:/2017/09/22/taskorganizer/</id><summary type="html">&lt;p&gt;Example of a checklist web app in django&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Task Organizer&lt;/h1&gt;
+&lt;p&gt;Simple task list written in django&lt;/p&gt;
+&lt;h2&gt;Screenshots&lt;/h2&gt;
+&lt;!--adding {attach} like this ({attach}screenshot*.jpg) --&gt;
+
+&lt;p&gt;&lt;img alt="Sign-in/Login" src="http://www.andrewtcrooks.com/2017/09/22/taskorganizer/screenshot1.jpg?raw=true" title="Sign-in/Login"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Task List" src="http://www.andrewtcrooks.com/2017/09/22/taskorganizer/screenshot2.jpg?raw=true" title="Task List"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Add Task" src="http://www.andrewtcrooks.com/2017/09/22/taskorganizer/screenshot3.jpg?raw=true" title="Add Task"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Edit Task" src="http://www.andrewtcrooks.com/2017/09/22/taskorganizer/screenshot4.jpg?raw=true" title="Edit Task"&gt;&lt;/p&gt;
+&lt;h2&gt;Getting Started&lt;/h2&gt;
+&lt;p&gt;These instructions will get a copy of the project up and running on your local machine for development and testing purposes.&lt;/p&gt;
+&lt;h3&gt;Prerequisites&lt;/h3&gt;
+&lt;p&gt;Python dependancies&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Python==3.6.2
+Django==1.11.5
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Additional requirements&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;1. A locally served PostgreSQL database. I used the Postgres.app on my Mac but 
+   any postgresql server should be fine.
+
+2. Web browser open to http://127.0.0.1:8000
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Optional requirements (goes with PostgreSQL database reset example below)
+If you use Postgres.app on Mac, add the following lines to your .bashrc or .profile to enable CLI tools for the PostgreSQL database&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# add CLI tools for PostGRESQL
+export PATH=&amp;quot;/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Installing&lt;/h3&gt;
+&lt;p&gt;After copying the repo you will need to create two files&lt;/p&gt;
+&lt;p&gt;Create local.py in settings directory (/taskorganizer/config/settings) with the following code and replace name_of_postgresql_db with the name of your PostgreSQL database&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.base&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+
+
+&lt;span class="n"&gt;DEBUG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
+
+&lt;span class="n"&gt;DATABASES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;ENGINE&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;django.db.backends.postgresql&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;NAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;name_of_postgresql_db&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;HOST&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;localhost&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+
+&lt;span class="n"&gt;INSTALLED_APPS&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;debug_toolbar&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                   &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="n"&gt;MIDDLEWARE&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;debug_toolbar.middleware.DebugToolbarMiddleware&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create secrets.json in root directory (/taskorganizer/) with the following code and replace your_key_here with a secret key that only you will know&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;{
+  &amp;quot;FILENAME&amp;quot;: &amp;quot;secrets.json&amp;quot;,
+  &amp;quot;SECRET_KEY&amp;quot;: &amp;quot;your_key_here&amp;quot;,
+  &amp;quot;DATABASES_HOST&amp;quot;: &amp;quot;127.0.0.1&amp;quot;,
+  &amp;quot;PORT&amp;quot;: &amp;quot;5432&amp;quot;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For version control, make sure local.py and secrets.json are listed in your .gitignore file&lt;/p&gt;
+&lt;p&gt;Start the app on a local server by running the following code in a terminal and view at http://127.0.0.1:8000&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cd ~/taskorganizer          # cd to wherever you put the repo locally
+python manage.py runserver 8000 --settings=config.settings.local
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You should now have a running version of the app!&lt;/p&gt;
+&lt;p&gt;Try adding/editing/deleting tasks and enjoy&lt;/p&gt;
+&lt;h3&gt;Resetting&lt;/h3&gt;
+&lt;p&gt;Whenever you change the model you will need to first reset the database and then redo the migrations&lt;/p&gt;
+&lt;p&gt;To reset the database, run the following code in a terminal and replace db_name with the name of your PostgreSQL database&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;dropdb name_of_postgresql_db
+create name_of_postgresql_db
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To redo the migrations, delete the 0001_initial.py file in the /tasklist/app/migrations folder and run the following code in a terminal&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python manage.py makemigrations --settings==config.settings.local
+python manage.py migrate --settings==config.settings.local
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Built With&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://docs.djangoproject.com/en/1.11/"&gt;Django&lt;/a&gt; - web framework&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Authors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Andrew T. Crooks&lt;/strong&gt; - &lt;a href="https://github.com/andrewtcrooks"&gt;Github&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;License&lt;/h2&gt;
+&lt;p&gt;This project is licensed under the MIT License - see the &lt;a href="LICENSE.md"&gt;LICENSE.md&lt;/a&gt; file for details&lt;/p&gt;</content><category term="django"></category><category term="django1.11"></category><category term="python"></category><category term="python3"></category><category term="postgresql"></category></entry></feed>
